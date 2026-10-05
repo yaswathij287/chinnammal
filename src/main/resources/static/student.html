@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chinnammal — Smart Management Platform</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-emblem">CH</div>
+      <div class="brand-details">
+        <span class="brand-name">CHINNAMMAL</span>
+        <span class="brand-subtitle">Smart Management Platform</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Student Portal</div>
+      <a class="nav-item active" data-tab="overview">
+        <span class="nav-icon">📊</span>
+        <span>My Dashboard</span>
+      </a>
+      <a class="nav-item" data-tab="room">
+        <span class="nav-icon">🛏️</span>
+        <span>My Room & Roommates</span>
+      </a>
+      <a class="nav-item" data-tab="fees">
+        <span class="nav-icon">💳</span>
+        <span>Fee Account</span>
+      </a>
+
+      <div class="nav-section-title">Self-Service</div>
+      <a class="nav-item" data-tab="complaints">
+        <span class="nav-icon">⚠️</span>
+        <span>File / View Complaints</span>
+      </a>
+      <a class="nav-item" data-tab="leaves">
+        <span class="nav-icon">📝</span>
+        <span>Apply for Leave</span>
+      </a>
+      <a class="nav-item" data-tab="attendance">
+        <span class="nav-icon">📅</span>
+        <span>My Attendance</span>
+      </a>
+      <a class="nav-item" data-tab="visitors">
+        <span class="nav-icon">👥</span>
+        <span>My Visitors</span>
+      </a>
+      <a class="nav-item" data-tab="profile">
+        <span class="nav-icon">⚙️</span>
+        <span>Profile & Password</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <span id="sidebarRoomLabel">Room: Assigned</span>
+      </div>
+      <button id="logoutBtn" class="btn-logout" style="width: 100%; justify-content: center;">
+        <span>🚪</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+        <h1 id="pageHeading" class="page-heading">My Dashboard</h1>
+      </div>
+
+      <div class="topbar-right">
+        <div class="user-profile-menu">
+          <div id="topbarUserAvatar" class="user-avatar">ST</div>
+          <div class="user-info">
+            <span id="topbarUserName" class="user-name">Student</span>
+            <span id="topbarUserRole" class="user-role-badge">STUDENT</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content-body">
+      <!-- 1. OVERVIEW -->
+      <section id="tab-overview" class="view-section active">
+        <!-- Personal Welcome Banner -->
+        <div class="card" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: #ffffff; border: none; margin-bottom: 24px;">
+          <div class="card-body" style="padding: 28px;">
+            <span style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #a5b4fc;">Welcome to Chinnammal</span>
+            <h2 id="welcomeStudentName" style="font-size: 1.6rem; font-weight: 800; margin-top: 4px; color: #ffffff;">Welcome back!</h2>
+            <p id="welcomeStudentMeta" style="font-size: 0.85rem; color: #c7d2fe; margin-top: 6px;">Loading residency profile...</p>
+          </div>
+        </div>
+
+        <!-- Metrics -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Assigned Room</span>
+              <span id="statStudentRoom" class="stat-number" style="font-size: 1.5rem;">--</span>
+              <span id="statStudentBed" class="stat-subtext">Bed --</span>
+            </div>
+            <div class="stat-icon-wrap icon-indigo">🛏️</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Fee Status</span>
+              <span id="statStudentFeeStatus" class="stat-number" style="font-size: 1.4rem;">--</span>
+              <span id="statStudentFeeBalance" class="stat-subtext">Balance: ₹ --</span>
+            </div>
+            <div class="stat-icon-wrap icon-green">💳</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Attendance Rate</span>
+              <span id="statStudentAttPct" class="stat-number">--%</span>
+              <span class="stat-subtext">Present percentage</span>
+            </div>
+            <div class="stat-icon-wrap icon-blue">📅</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">My Complaints</span>
+              <span id="statStudentComplaints" class="stat-number">0</span>
+              <span class="stat-subtext">Tickets submitted</span>
+            </div>
+            <div class="stat-icon-wrap icon-rose">⚠️</div>
+          </div>
+        </div>
+
+        <!-- Quick Launch -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Quick Actions</h3>
+            </div>
+            <div class="card-body" style="display: flex; flex-direction: column; gap: 10px;">
+              <button class="btn btn-primary" onclick="document.querySelector('.sidebar-nav .nav-item[data-tab=\'complaints\']').click()">⚠️ File Maintenance Complaint</button>
+              <button class="btn btn-secondary" onclick="document.querySelector('.sidebar-nav .nav-item[data-tab=\'leaves\']').click()">📝 Request Campus Leave / Out-Pass</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">My Roommates</h3>
+            </div>
+            <div class="card-body" id="overviewRoommatesList">
+              <p style="color: var(--text-muted); font-size: 0.85rem;">Loading roommates...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. ROOM & ROOMMATES -->
+      <section id="tab-room" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Room & Resident Details</h3>
+          </div>
+          <div class="card-body">
+            <div id="roomDetailsInfo" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;"></div>
+            <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 12px;">Assigned Roommates</h4>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Bed</th>
+                    <th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody id="roommatesTableBody">
+                  <tr><td colspan="5" style="text-align: center;">Loading roommates...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. FEES -->
+      <section id="tab-fees" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">My Fee Account</h3>
+          </div>
+          <div class="card-body">
+            <div id="feeAccountBox" style="background: var(--bg-main); border: 1px solid var(--card-border); padding: 24px; border-radius: var(--radius-md); max-width: 500px; margin-bottom: 24px;">
+              <p style="font-size: 0.85rem; color: var(--text-muted);">Loading fee balance...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. COMPLAINTS -->
+      <section id="tab-complaints" class="view-section">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+          <!-- Submit Form -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Submit New Complaint</h3>
+            </div>
+            <div class="card-body">
+              <form id="studentComplaintForm">
+                <div class="form-group">
+                  <label class="form-label">Category *</label>
+                  <select id="compCategory" class="form-control" required>
+                    <option value="Maintenance">Maintenance & Electrical</option>
+                    <option value="Plumbing">Plumbing & Water</option>
+                    <option value="Network">Internet / Wi-Fi</option>
+                    <option value="Furniture">Furniture & Carpentry</option>
+                    <option value="Food">Food / Mess</option>
+                    <option value="Cleanliness">Room & Corridor Cleaning</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Priority</label>
+                  <select id="compPriority" class="form-control">
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM" selected>Medium</option>
+                    <option value="HIGH">High / Urgent</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Description *</label>
+                  <textarea id="compDescription" class="form-control" rows="4" placeholder="Describe the issue in detail..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Complaint</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- History -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">My Filed Complaints</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="studentComplaintsTableBody">
+                  <tr><td colspan="4" style="text-align: center;">Loading complaints...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. LEAVES -->
+      <section id="tab-leaves" class="view-section">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+          <!-- Apply Form -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Apply for Campus Leave</h3>
+            </div>
+            <div class="card-body">
+              <form id="studentLeaveForm">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">From Date *</label>
+                    <input type="date" id="leaveFrom" class="form-control" required>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">To Date *</label>
+                    <input type="date" id="leaveTo" class="form-control" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Reason for Leave *</label>
+                  <textarea id="leaveReason" class="form-control" rows="3" placeholder="State reason (e.g. hometown visit, family function)..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Out-Pass Request</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Leave History -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Leave History</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Dates</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="studentLeavesTableBody">
+                  <tr><td colspan="3" style="text-align: center;">Loading leave history...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. ATTENDANCE -->
+      <section id="tab-attendance" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">My Attendance Record</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Entry Time</th>
+                  <th>Exit Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="studentAttTableBody">
+                <tr><td colspan="4" style="text-align: center;">Loading attendance...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. VISITORS -->
+      <section id="tab-visitors" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">My Visitor Passes</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Visitor Name</th>
+                  <th>Relationship</th>
+                  <th>Contact Phone</th>
+                  <th>Date of Visit</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="studentVisTableBody">
+                <tr><td colspan="5" style="text-align: center;">Loading visitors...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. PROFILE & PASSWORD -->
+      <section id="tab-profile" class="view-section">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+          <!-- Profile Card -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">My Profile Details</h3>
+            </div>
+            <div class="card-body" id="studentProfileBox">
+              <p style="color: var(--text-muted);">Loading profile...</p>
+            </div>
+          </div>
+
+          <!-- Change Password -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Change Account Password</h3>
+            </div>
+            <div class="card-body">
+              <form id="studentChangePasswordForm">
+                <div class="form-group">
+                  <label class="form-label">New Password *</label>
+                  <input type="password" id="pNewPass" class="form-control" placeholder="At least 8 chars with mixed case, number, symbol" required>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Confirm New Password *</label>
+                  <input type="password" id="pConfirmPass" class="form-control" placeholder="Re-enter new password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+<script src="/js/student.js"></script>
+</body>
+</html>

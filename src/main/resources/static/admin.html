@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chinnammal — Smart Management Platform</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-emblem">CH</div>
+      <div class="brand-details">
+        <span class="brand-name">CHINNAMMAL</span>
+        <span class="brand-subtitle">Smart Management Platform</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Main Portal</div>
+      <a class="nav-item active" data-tab="overview">
+        <span class="nav-icon">📊</span>
+        <span>Overview</span>
+      </a>
+
+      <div class="nav-section-title">Management</div>
+      <a class="nav-item" data-tab="students">
+        <span class="nav-icon">🎓</span>
+        <span>Students</span>
+        <span id="badgeStudentsCount" class="nav-badge">0</span>
+      </a>
+      <a class="nav-item" data-tab="wardens">
+        <span class="nav-icon">🛡️</span>
+        <span>Wardens</span>
+      </a>
+      <a class="nav-item" data-tab="rooms">
+        <span class="nav-icon">🏢</span>
+        <span>Rooms & Blocks</span>
+      </a>
+      <a class="nav-item" data-tab="fees">
+        <span class="nav-icon">💳</span>
+        <span>Fee Accounts</span>
+      </a>
+
+      <div class="nav-section-title">Operations & Safety</div>
+      <a class="nav-item" data-tab="complaints">
+        <span class="nav-icon">⚠️</span>
+        <span>Complaints</span>
+        <span id="badgeComplaintsCount" class="nav-badge badge-danger">0</span>
+      </a>
+      <a class="nav-item" data-tab="leaves">
+        <span class="nav-icon">📝</span>
+        <span>Leave Requests</span>
+        <span id="badgeLeavesCount" class="nav-badge">0</span>
+      </a>
+      <a class="nav-item" data-tab="attendance">
+        <span class="nav-icon">📅</span>
+        <span>Attendance</span>
+      </a>
+      <a class="nav-item" data-tab="visitors">
+        <span class="nav-icon">👥</span>
+        <span>Visitors</span>
+      </a>
+      <a class="nav-item" data-tab="security">
+        <span class="nav-icon">🔒</span>
+        <span>Security Logs</span>
+      </a>
+      <a class="nav-item" data-tab="reports">
+        <span class="nav-icon">📑</span>
+        <span>Reports & Summary</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <span>SQLite Database Online</span>
+      </div>
+      <button id="logoutBtn" class="btn-logout" style="width: 100%; justify-content: center;">
+        <span>🚪</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <div class="main-wrapper">
+    <!-- Top Navigation -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+        <h1 id="pageHeading" class="page-heading">Overview</h1>
+      </div>
+
+      <div class="topbar-right">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="globalSearch" class="search-input" placeholder="Quick search...">
+        </div>
+
+        <div class="user-profile-menu">
+          <div id="topbarUserAvatar" class="user-avatar">AD</div>
+          <div class="user-info">
+            <span id="topbarUserName" class="user-name">System Administrator</span>
+            <span id="topbarUserRole" class="user-role-badge">ADMIN</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content Body -->
+    <main class="content-body">
+
+      <!-- ==============================================
+           TAB 1: OVERVIEW
+           ============================================== -->
+      <section id="tab-overview" class="view-section active">
+        <!-- Metric Cards -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Total Students</span>
+              <span id="statTotalStudents" class="stat-number">--</span>
+              <span class="stat-subtext">Active campus residents</span>
+            </div>
+            <div class="stat-icon-wrap icon-purple">🎓</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Occupancy Rate</span>
+              <span id="statOccupancyPct" class="stat-number">--%</span>
+              <span id="statBedsRatio" class="stat-subtext">-- / -- Beds Occupied</span>
+            </div>
+            <div class="stat-icon-wrap icon-blue">🏢</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Pending Complaints</span>
+              <span id="statPendingComplaints" class="stat-number" style="color: var(--danger);">--</span>
+              <span class="stat-subtext">Awaiting maintenance</span>
+            </div>
+            <div class="stat-icon-wrap icon-rose">⚠️</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Pending Leaves</span>
+              <span id="statPendingLeaves" class="stat-number" style="color: var(--warning);">--</span>
+              <span class="stat-subtext">Out-pass authorizations</span>
+            </div>
+            <div class="stat-icon-wrap icon-amber">📝</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Pending Fee Dues</span>
+              <span id="statPendingFees" class="stat-number" style="font-size: 1.6rem;">₹ --</span>
+              <span id="statCollectedFees" class="stat-subtext">₹ -- Collected</span>
+            </div>
+            <div class="stat-icon-wrap icon-green">💳</div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Today's Visitors</span>
+              <span id="statTodayVisitors" class="stat-number">--</span>
+              <span class="stat-subtext">Registered campus visits</span>
+            </div>
+            <div class="stat-icon-wrap icon-cyan">👥</div>
+          </div>
+        </div>
+
+        <!-- Visual Progress & Quick Actions -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 24px;">
+          <div class="card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3 class="card-title">Residency Capacity & Occupancy</h3>
+                <span class="card-subtitle">Real-time bed utilization across all blocks</span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 600;">
+                <span>Bed Allocation</span>
+                <span id="meterOccupancyText">0%</span>
+              </div>
+              <div class="progress-bar-container" style="height: 14px;">
+                <div id="meterOccupancyBar" class="progress-bar-fill" style="width: 0%;"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 0.78rem; color: var(--text-muted); margin-top: 10px;">
+                <span id="meterOccupiedBeds">Occupied: 0</span>
+                <span id="meterAvailableBeds">Available: 0</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-bottom: 0;">
+            <div class="card-header">
+              <div class="card-title-group">
+                <h3 class="card-title">Administrative Actions</h3>
+                <span class="card-subtitle">Instant execution triggers</span>
+              </div>
+            </div>
+            <div class="card-body" style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button id="btnQuickAddStudent" class="btn btn-primary">➕ Register Student</button>
+              <button id="btnQuickAddRoom" class="btn btn-secondary">🏢 Add Room</button>
+              <button id="btnQuickRecordVisitor" class="btn btn-secondary">👥 Visitor Pass</button>
+              <button id="btnQuickViewReport" class="btn btn-outline">📑 Full Report</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 2: STUDENTS
+           ============================================== -->
+      <section id="tab-students" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Student Residents</h3>
+              <span class="card-subtitle">Manage student enrollments and dynamic access credentials</span>
+            </div>
+            <div class="card-actions">
+              <input type="text" id="studentsSearchInput" class="form-control" style="width: 220px;" placeholder="Search name, email, phone...">
+              <button id="btnAddStudentModalOpen" class="btn btn-primary">➕ Register New Student</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student Name</th>
+                  <th>Department</th>
+                  <th>Year</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  <th>Room</th>
+                  <th>Bed</th>
+                  <th>Username</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTableBody">
+                <tr><td colspan="11" style="text-align: center;">Loading students...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 3: WARDENS
+           ============================================== -->
+      <section id="tab-wardens" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Hostel Wardens</h3>
+              <span class="card-subtitle">Supervisory staff, assigned blocks, and dynamic login account status</span>
+            </div>
+            <div class="card-actions">
+              <button id="btnAddWardenModalOpen" class="btn btn-primary">➕ Add New Warden</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Employee ID</th>
+                  <th>Department</th>
+                  <th>Contact</th>
+                  <th>Email</th>
+                  <th>Assigned Block</th>
+                  <th>Username</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="wardensTableBody">
+                <tr><td colspan="9" style="text-align: center;">Loading wardens...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 4: ROOMS & BLOCKS
+           ============================================== -->
+      <section id="tab-rooms" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Hostel Blocks & Rooms</h3>
+              <span class="card-subtitle">Room capacities, current occupancy, and available beds</span>
+            </div>
+            <div class="card-actions">
+              <select id="roomsBlockFilter" class="form-control" style="width: 180px;">
+                <option value="">All Blocks</option>
+              </select>
+              <button id="btnAddRoomModalOpen" class="btn btn-primary">➕ Add Room</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Room No</th>
+                  <th>Block</th>
+                  <th>Capacity</th>
+                  <th>Occupied Beds</th>
+                  <th>Available Beds</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="roomsTableBody">
+                <tr><td colspan="6" style="text-align: center;">Loading rooms...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 5: FEES
+           ============================================== -->
+      <section id="tab-fees" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Fee Management</h3>
+              <span class="card-subtitle">Track payments, balances, dues, and payment collections</span>
+            </div>
+            <div class="card-actions">
+              <select id="feesStatusFilter" class="form-control" style="width: 150px;">
+                <option value="ALL">All Statuses</option>
+                <option value="PAID">Paid</option>
+                <option value="PENDING">Pending / Partial</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Fee ID</th>
+                  <th>Student Name</th>
+                  <th>Total Fee</th>
+                  <th>Paid Amount</th>
+                  <th>Balance Due</th>
+                  <th>Due Date</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="feesTableBody">
+                <tr><td colspan="8" style="text-align: center;">Loading fees...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 6: COMPLAINTS
+           ============================================== -->
+      <section id="tab-complaints" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Complaints & Grievances</h3>
+              <span class="card-subtitle">Review resident issues and update resolution status</span>
+            </div>
+            <div class="card-actions">
+              <select id="complaintsStatusFilter" class="form-control" style="width: 160px;">
+                <option value="ALL">All Statuses</option>
+                <option value="OPEN">Open</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="RESOLVED">Resolved</option>
+                <option value="REJECTED">Rejected</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student</th>
+                  <th>Room</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Update Status</th>
+                </tr>
+              </thead>
+              <tbody id="complaintsTableBody">
+                <tr><td colspan="8" style="text-align: center;">Loading complaints...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 7: LEAVES
+           ============================================== -->
+      <section id="tab-leaves" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Leave & Out-Pass Requests</h3>
+              <span class="card-subtitle">Student hostel leave authorizations</span>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student Name</th>
+                  <th>From Date</th>
+                  <th>To Date</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Authorization</th>
+                </tr>
+              </thead>
+              <tbody id="leavesTableBody">
+                <tr><td colspan="7" style="text-align: center;">Loading leave requests...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 8: ATTENDANCE
+           ============================================== -->
+      <section id="tab-attendance" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Daily Attendance Logs</h3>
+              <span class="card-subtitle">Resident roll-call and curfew compliance</span>
+            </div>
+            <div class="card-actions">
+              <button id="btnMarkAttendanceOpen" class="btn btn-primary">➕ Record Attendance</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student Name</th>
+                  <th>Date</th>
+                  <th>Entry Time</th>
+                  <th>Exit Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="attendanceTableBody">
+                <tr><td colspan="6" style="text-align: center;">Loading attendance...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 9: VISITORS
+           ============================================== -->
+      <section id="tab-visitors" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Visitor Entry Logs</h3>
+              <span class="card-subtitle">Campus guest entry permits and checkouts</span>
+            </div>
+            <div class="card-actions">
+              <button id="btnAddVisitorModalOpen" class="btn btn-primary">➕ Issue Visitor Pass</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Pass ID</th>
+                  <th>Student Name</th>
+                  <th>Visitor Name</th>
+                  <th>Relationship</th>
+                  <th>Phone</th>
+                  <th>Visit Date</th>
+                  <th>Time</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="visitorsTableBody">
+                <tr><td colspan="9" style="text-align: center;">Loading visitor records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 10: SECURITY LOGS
+           ============================================== -->
+      <section id="tab-security" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Security & Turnstile Audit</h3>
+              <span class="card-subtitle">Automated gate check-ins and curfew alerts</span>
+            </div>
+            <div class="card-actions">
+              <button id="btnLogSecurityModalOpen" class="btn btn-primary">➕ Log Event</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Log ID</th>
+                  <th>Timestamp</th>
+                  <th>Student Name</th>
+                  <th>Event Type</th>
+                  <th>Gate / Portal</th>
+                  <th>Verification Method</th>
+                </tr>
+              </thead>
+              <tbody id="securityTableBody">
+                <tr><td colspan="6" style="text-align: center;">Loading security records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           TAB 11: REPORTS
+           ============================================== -->
+      <section id="tab-reports" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Executive Summary Report</h3>
+              <span class="card-subtitle">Consolidated analytical review of platform operations</span>
+            </div>
+            <div class="card-actions">
+              <button id="btnCopyReportText" class="btn btn-secondary">📋 Copy Report Text</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <pre id="reportTextContent" style="background-color: var(--bg-main); border: 1px solid var(--card-border); padding: 20px; border-radius: var(--radius-md); font-family: monospace; font-size: 0.85rem; line-height: 1.6; white-space: pre-wrap; overflow-x: auto; color: var(--text-main);"></pre>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- ==========================================================
+     MODALS
+     ========================================================== -->
+
+<!-- 1. Add Student Modal (Dynamic Registration) -->
+<div id="addStudentModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Register New Student</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="addStudentForm">
+      <div class="modal-body">
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">
+          Personal details will be registered, and dynamic login credentials will be generated automatically.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" id="addStudentName" class="form-control" placeholder="e.g. Arun Kumar" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Department *</label>
+            <input type="text" id="addStudentDept" class="form-control" placeholder="e.g. Computer Science" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Year of Study *</label>
+            <select id="addStudentYear" class="form-control" required>
+              <option value="1">1st Year</option>
+              <option value="2">2nd Year</option>
+              <option value="3">3rd Year</option>
+              <option value="4">4th Year</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input type="tel" id="addStudentPhone" class="form-control" placeholder="10-digit phone" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" id="addStudentEmail" class="form-control" placeholder="student@example.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Assign Room *</label>
+            <select id="addStudentRoom" class="form-control" required>
+              <option value="">Select available room...</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Bed Number *</label>
+            <input type="text" id="addStudentBed" class="form-control" placeholder="e.g. Bed 1" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" id="btnSubmitAddStudent" class="btn btn-primary">Save & Generate Credentials</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Student Credentials Success Modal -->
+<div id="credentialsModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">🎉 Student Registered Successfully</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+        Student account has been provisioned. Please share the generated login credentials with the student:
+      </p>
+
+      <div class="credentials-box">
+        <div class="credential-row">
+          <span class="cred-label">Student Name</span>
+          <span id="credStudentName" style="font-weight: 700; color: var(--text-main);">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Username</span>
+          <span id="credUsername" class="cred-value">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Temporary Password</span>
+          <span id="credPassword" class="cred-value">--</span>
+        </div>
+      </div>
+
+      <p style="font-size: 0.78rem; color: var(--text-muted);">
+        ⚠️ The student will be prompted to set a permanent password upon their first sign-in.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="btnCopyCredentials" class="btn btn-primary">📋 Copy Credentials</button>
+      <button type="button" class="btn btn-outline" data-modal-close>Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Add Warden Modal (Dynamic Account Creation) -->
+<div id="addWardenModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Register New Hostel Warden</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="addWardenForm">
+      <div class="modal-body">
+        <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 16px;">
+          Warden profile will be saved and a secure login account will be generated automatically.
+        </p>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="addWardenName" class="form-control" placeholder="e.g. Priya Kumar" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Employee ID *</label>
+            <input type="text" id="addWardenEmpId" class="form-control" placeholder="e.g. WRD-101" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Department *</label>
+            <input type="text" id="addWardenDept" class="form-control" placeholder="e.g. Student Affairs" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input type="tel" id="addWardenPhone" class="form-control" placeholder="10-digit phone" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email Address *</label>
+            <input type="email" id="addWardenEmail" class="form-control" placeholder="priya.kumar@chinnammal.edu" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assigned Block</label>
+            <select id="addWardenBlock" class="form-control">
+              <option value="">Unassigned</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address (Optional)</label>
+          <textarea id="addWardenAddress" class="form-control" rows="2" placeholder="Residential / Staff Quarters address"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" id="btnSubmitAddWarden" class="btn btn-primary">Save & Generate Credentials</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3b. Warden Credentials Success Modal -->
+<div id="wardenCredentialsModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">🎉 Warden Created Successfully</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+        Warden information saved and login credentials generated. The warden can immediately use these credentials to log in:
+      </p>
+
+      <div class="credentials-box">
+        <div class="credential-row">
+          <span class="cred-label">Name:</span>
+          <span id="credWardenName" style="font-weight: 700; color: var(--text-main);">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Employee ID:</span>
+          <span id="credWardenEmpId" class="cred-value">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Username:</span>
+          <span id="credWardenUsername" class="cred-value">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Temporary Password:</span>
+          <span id="credWardenPassword" class="cred-value">--</span>
+        </div>
+      </div>
+
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 10px;">
+        ⚠️ The warden will be prompted to set a permanent password upon first login.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="btnCopyWardenCredentials" class="btn btn-primary">📋 Copy Credentials</button>
+      <button type="button" class="btn btn-outline" data-modal-close>Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- 3c. View Warden Details Modal -->
+<div id="viewWardenModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Warden Profile Details</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="credentials-box">
+        <div class="credential-row">
+          <span class="cred-label">Full Name:</span>
+          <span id="viewWardenName" style="font-weight: 700; color: var(--text-main);">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Employee ID:</span>
+          <span id="viewWardenEmpId" class="cred-value">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Department:</span>
+          <span id="viewWardenDept" style="color: var(--text-main);">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Contact Phone:</span>
+          <span id="viewWardenPhone" style="color: var(--text-main);">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Email:</span>
+          <span id="viewWardenEmail" style="color: var(--text-main);">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Assigned Block:</span>
+          <span id="viewWardenBlock" style="color: var(--text-main);">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Address:</span>
+          <span id="viewWardenAddress" style="color: var(--text-main);">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Login Username:</span>
+          <span id="viewWardenUsername" class="cred-value">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">Account Status:</span>
+          <span id="viewWardenStatus">--</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" data-modal-close>Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 3d. Edit Warden Modal -->
+<div id="editWardenModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Edit Warden Details</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="editWardenForm">
+      <input type="hidden" id="editWardenId">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input type="text" id="editWardenName" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Employee ID *</label>
+            <input type="text" id="editWardenEmpId" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Department *</label>
+            <input type="text" id="editWardenDept" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone *</label>
+            <input type="tel" id="editWardenPhone" class="form-control" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email *</label>
+            <input type="email" id="editWardenEmail" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Assigned Block</label>
+            <select id="editWardenBlock" class="form-control">
+              <option value="">Unassigned</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address</label>
+          <textarea id="editWardenAddress" class="form-control" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Update Warden</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3e. Temporary Password Reset Modal (Shared for Students & Wardens) -->
+<div id="resetPasswordModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">🔑 Temporary Credentials Issued</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">
+        The password has been reset successfully. Please share the generated temporary credentials with the user:
+      </p>
+
+      <div class="credentials-box">
+        <div class="credential-row">
+          <span class="cred-label">Username:</span>
+          <span id="resetCredUsername" class="cred-value">--</span>
+        </div>
+        <div class="credential-row">
+          <span class="cred-label">New Temporary Password:</span>
+          <span id="resetCredPassword" class="cred-value">--</span>
+        </div>
+      </div>
+
+      <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 10px;">
+        ⚠️ The user will be required to change this password on their next login.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" id="btnCopyResetCredentials" class="btn btn-primary">📋 Copy Credentials</button>
+      <button type="button" class="btn btn-outline" data-modal-close>Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- 4. Add Room Modal -->
+<div id="addRoomModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Add Room</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="addRoomForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Room Number *</label>
+          <input type="text" id="addRoomNumber" class="form-control" placeholder="e.g. A-301" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Hostel Block *</label>
+            <select id="addRoomBlock" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Capacity (Beds) *</label>
+            <input type="number" id="addRoomCapacity" class="form-control" min="1" max="10" value="2" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Room</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 5. Record Fee Payment Modal -->
+<div id="feePaymentModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Record Fee Payment</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="feePaymentForm">
+      <div class="modal-body">
+        <input type="hidden" id="payFeeId">
+        <div class="form-group">
+          <label class="form-label">Student</label>
+          <input type="text" id="payStudentName" class="form-control" readonly style="background: #f1f5f9;">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Current Balance (₹)</label>
+            <input type="text" id="payCurrentBalance" class="form-control" readonly style="background: #f1f5f9; font-weight: 700; color: var(--danger);">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Payment Amount (₹) *</label>
+            <input type="number" id="payAmount" class="form-control" min="1" step="any" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-success">Confirm Payment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 6. Issue Visitor Pass Modal -->
+<div id="addVisitorModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Issue Visitor Pass</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="addVisitorForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Select Student *</label>
+          <select id="visitorStudentSelect" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Visitor Name *</label>
+          <input type="text" id="visitorName" class="form-control" placeholder="Visitor full name" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Relationship *</label>
+            <input type="text" id="visitorRelation" class="form-control" placeholder="e.g. Father, Mother, Guardian" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input type="tel" id="visitorPhone" class="form-control" placeholder="10-digit phone" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Issue Pass</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 7. Record Attendance Modal -->
+<div id="markAttendanceModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Record Attendance</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="markAttendanceForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Select Student *</label>
+          <select id="attStudentSelect" class="form-control" required></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date *</label>
+            <input type="date" id="attDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status *</label>
+            <select id="attStatus" class="form-control" required>
+              <option value="PRESENT">PRESENT</option>
+              <option value="ABSENT">ABSENT</option>
+              <option value="LATE">LATE</option>
+              <option value="ON_LEAVE">ON_LEAVE</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Entry</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 8. Log Security Event Modal -->
+<div id="logSecurityModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Log Security Event</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="logSecurityForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Student (Optional)</label>
+          <select id="secStudentSelect" class="form-control">
+            <option value="">General / Gate Alert</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Event Type *</label>
+            <select id="secEventType" class="form-control" required>
+              <option value="GATE_ENTRY">GATE_ENTRY</option>
+              <option value="GATE_EXIT">GATE_EXIT</option>
+              <option value="CURFEW_VIOLATION">CURFEW_VIOLATION</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gate / Checkpoint *</label>
+            <input type="text" id="secGate" class="form-control" value="Main Gate" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Verification Method *</label>
+          <select id="secMethod" class="form-control" required>
+            <option value="BIOMETRIC">BIOMETRIC (Face / Fingerprint)</option>
+            <option value="RFID_CARD">RFID_CARD</option>
+            <option value="MANUAL_REGISTRY">MANUAL_REGISTRY</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Record Log</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

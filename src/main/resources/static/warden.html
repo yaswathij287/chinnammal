@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chinnammal — Smart Management Platform</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-emblem">CH</div>
+      <div class="brand-details">
+        <span class="brand-name">CHINNAMMAL</span>
+        <span class="brand-subtitle">Smart Management Platform</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-title">Warden Portal</div>
+      <a class="nav-item active" data-tab="overview">
+        <span class="nav-icon">📊</span>
+        <span>Block Overview</span>
+      </a>
+      <a class="nav-item" data-tab="students">
+        <span class="nav-icon">🎓</span>
+        <span>Block Residents</span>
+      </a>
+      <a class="nav-item" data-tab="rooms">
+        <span class="nav-icon">🏢</span>
+        <span>Rooms & Beds</span>
+      </a>
+
+      <div class="nav-section-title">Supervision</div>
+      <a class="nav-item" data-tab="complaints">
+        <span class="nav-icon">⚠️</span>
+        <span>Complaints</span>
+        <span id="badgeWardenComplaints" class="nav-badge badge-danger">0</span>
+      </a>
+      <a class="nav-item" data-tab="leaves">
+        <span class="nav-icon">📝</span>
+        <span>Leave Approvals</span>
+        <span id="badgeWardenLeaves" class="nav-badge">0</span>
+      </a>
+      <a class="nav-item" data-tab="attendance">
+        <span class="nav-icon">📅</span>
+        <span>Daily Attendance</span>
+      </a>
+      <a class="nav-item" data-tab="visitors">
+        <span class="nav-icon">👥</span>
+        <span>Visitor Entry</span>
+      </a>
+      <a class="nav-item" data-tab="security">
+        <span class="nav-icon">🔒</span>
+        <span>Security Logs</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="system-status">
+        <span class="status-dot"></span>
+        <span id="sidebarBlockLabel">Assigned: Active Block</span>
+      </div>
+      <button id="logoutBtn" class="btn-logout" style="width: 100%; justify-content: center;">
+        <span>🚪</span> Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main View Area -->
+  <div class="main-wrapper">
+    <header class="topbar">
+      <div class="topbar-left">
+        <button id="mobileMenuBtn" class="mobile-menu-btn">☰</button>
+        <h1 id="pageHeading" class="page-heading">Block Overview</h1>
+      </div>
+
+      <div class="topbar-right">
+        <div class="user-profile-menu">
+          <div id="topbarUserAvatar" class="user-avatar">WD</div>
+          <div class="user-info">
+            <span id="topbarUserName" class="user-name">Hostel Warden</span>
+            <span id="topbarUserRole" class="user-role-badge">WARDEN</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="content-body">
+      <!-- 1. OVERVIEW -->
+      <section id="tab-overview" class="view-section active">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Block Residents</span>
+              <span id="statWardenStudents" class="stat-number">--</span>
+              <span class="stat-subtext">Active students in block</span>
+            </div>
+            <div class="stat-icon-wrap icon-purple">🎓</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Block Rooms</span>
+              <span id="statWardenRooms" class="stat-number">--</span>
+              <span class="stat-subtext">Assigned room units</span>
+            </div>
+            <div class="stat-icon-wrap icon-blue">🏢</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Open Complaints</span>
+              <span id="statWardenComplaints" class="stat-number" style="color: var(--danger);">--</span>
+              <span class="stat-subtext">Requiring inspection</span>
+            </div>
+            <div class="stat-icon-wrap icon-rose">⚠️</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-content">
+              <span class="stat-label">Pending Out-Passes</span>
+              <span id="statWardenLeaves" class="stat-number" style="color: var(--warning);">--</span>
+              <span class="stat-subtext">Awaiting sign-off</span>
+            </div>
+            <div class="stat-icon-wrap icon-amber">📝</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Daily Duty Actions</h3>
+              <span class="card-subtitle">Fast operations for on-duty supervisory wardens</span>
+            </div>
+          </div>
+          <div class="card-body" style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button id="btnWardenQuickAtt" class="btn btn-primary">📅 Mark Attendance</button>
+            <button id="btnWardenQuickVis" class="btn btn-secondary">👥 Issue Visitor Pass</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. RESIDENTS -->
+      <section id="tab-students" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Block Residents</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student Name</th>
+                  <th>Dept</th>
+                  <th>Year</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Room</th>
+                  <th>Bed</th>
+                </tr>
+              </thead>
+              <tbody id="wardenStudentsTableBody">
+                <tr><td colspan="8" style="text-align: center;">Loading students...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. ROOMS -->
+      <section id="tab-rooms" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Block Room Status</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Room Number</th>
+                  <th>Capacity</th>
+                  <th>Occupied Beds</th>
+                  <th>Available Beds</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="wardenRoomsTableBody">
+                <tr><td colspan="5" style="text-align: center;">Loading rooms...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. COMPLAINTS -->
+      <section id="tab-complaints" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Grievances & Maintenance</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student</th>
+                  <th>Room</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Priority</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="wardenComplaintsTableBody">
+                <tr><td colspan="8" style="text-align: center;">Loading complaints...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. LEAVES -->
+      <section id="tab-leaves" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Student Leave Requests</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student Name</th>
+                  <th>From Date</th>
+                  <th>To Date</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Authorization</th>
+                </tr>
+              </thead>
+              <tbody id="wardenLeavesTableBody">
+                <tr><td colspan="7" style="text-align: center;">Loading leaves...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. ATTENDANCE -->
+      <section id="tab-attendance" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Daily Resident Attendance</h3>
+            </div>
+            <div class="card-actions">
+              <button id="btnWardenAttModalOpen" class="btn btn-primary">➕ Mark Attendance</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student</th>
+                  <th>Date</th>
+                  <th>Entry Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="wardenAttTableBody">
+                <tr><td colspan="5" style="text-align: center;">Loading attendance...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. VISITORS -->
+      <section id="tab-visitors" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h3 class="card-title">Visitor Entry Logs</h3>
+            </div>
+            <div class="card-actions">
+              <button id="btnWardenVisModalOpen" class="btn btn-primary">➕ Issue Pass</button>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Student</th>
+                  <th>Visitor</th>
+                  <th>Relation</th>
+                  <th>Phone</th>
+                  <th>Visit Date</th>
+                  <th>Status</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="wardenVisTableBody">
+                <tr><td colspan="8" style="text-align: center;">Loading visitors...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. SECURITY -->
+      <section id="tab-security" class="view-section">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Security & Gate Logs</h3>
+          </div>
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Log ID</th>
+                  <th>Timestamp</th>
+                  <th>Student</th>
+                  <th>Event</th>
+                  <th>Gate</th>
+                  <th>Method</th>
+                </tr>
+              </thead>
+              <tbody id="wardenSecTableBody">
+                <tr><td colspan="6" style="text-align: center;">Loading logs...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Mark Attendance -->
+<div id="wardenAttModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Record Attendance</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="wardenAttForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Select Student *</label>
+          <select id="wAttStudentSelect" class="form-control" required></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date *</label>
+            <input type="date" id="wAttDate" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status *</label>
+            <select id="wAttStatus" class="form-control" required>
+              <option value="PRESENT">PRESENT</option>
+              <option value="ABSENT">ABSENT</option>
+              <option value="LATE">LATE</option>
+              <option value="ON_LEAVE">ON_LEAVE</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Attendance</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal: Visitor Pass -->
+<div id="wardenVisModal" class="modal-overlay">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3 class="modal-title">Issue Visitor Pass</h3>
+      <button class="modal-close" data-modal-close>&times;</button>
+    </div>
+    <form id="wardenVisForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Select Student *</label>
+          <select id="wVisStudentSelect" class="form-control" required></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Visitor Name *</label>
+          <input type="text" id="wVisName" class="form-control" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Relationship *</label>
+            <input type="text" id="wVisRelation" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone *</label>
+            <input type="tel" id="wVisPhone" class="form-control" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline" data-modal-close>Cancel</button>
+        <button type="submit" class="btn btn-primary">Issue Pass</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+<script src="/js/warden.js"></script>
+</body>
+</html>

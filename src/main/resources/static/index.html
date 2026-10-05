@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chinnammal — Smart Management Platform</title>
+  <script>
+    async function checkRoute() {
+      try {
+        // 1. Check if Initial Admin Setup is required
+        const setupCheck = await fetch('/api/auth/setup-required').then(r => r.json());
+        if (setupCheck && setupCheck.success && setupCheck.data && setupCheck.data.setupRequired) {
+          window.location.replace('/setup.html');
+          return;
+        }
+
+        // 2. Check current authenticated session
+        const authCheck = await fetch('/api/auth/me').then(r => r.json());
+        if (authCheck && authCheck.success && authCheck.data) {
+          const user = authCheck.data;
+          if (user.forcePasswordChange) {
+            window.location.replace('/change-password.html');
+            return;
+          }
+
+          if (user.role === 'ADMIN') window.location.replace('/admin.html');
+          else if (user.role === 'WARDEN') window.location.replace('/warden.html');
+          else if (user.role === 'STUDENT') window.location.replace('/student.html');
+          else window.location.replace('/login.html');
+        } else {
+          window.location.replace('/login.html');
+        }
+      } catch (err) {
+        window.location.replace('/login.html');
+      }
+    }
+
+    checkRoute();
+  </script>
+</head>
+<body style="font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #0f172a; color: #ffffff;">
+  <div style="text-align: center;">
+    <h2 style="font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; color: #818cf8;">CHINNAMMAL</h2>
+    <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 6px;">Loading Smart Management Platform...</p>
+  </div>
+</body>
+</html>
